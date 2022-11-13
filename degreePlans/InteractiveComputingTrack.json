@@ -1,0 +1,34 @@
+{
+    "TrackName": "Interactive Computing",
+    "Requirements":[
+        {
+            "type":"Course",
+            "id": "CS6326"
+        },
+        {
+            "type":"Course",
+            "id": "CS6363"
+        },
+        {
+            "type":"Multiple",
+            "amount": 3,
+            "options":[
+                "CS6323",
+                "CS6328",
+                "CS6331",
+                "CS6334",
+                "CS6366"
+            ]
+        },
+        {
+            "type": "Elective",
+            "level": 6000,
+            "credits": 15
+        },
+        {
+            "type": "Elective",
+            "level": 5000,
+            "credits":3
+        }
+    ]
+}

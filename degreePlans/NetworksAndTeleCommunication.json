@@ -1,0 +1,35 @@
+{
+    "TrackName": "Networks and Telecommunications",
+    "Requirements":[
+        {
+            "type":"Course",
+            "id": "CS6352"
+        },
+        {
+            "type":"Course",
+            "id": "CS6363"
+        },
+        {
+            "type":"Course",
+            "id": "CS6378"
+        },
+        {
+            "type":"Course",
+            "id": "CS6385"
+        },
+        {
+            "type":"Course",
+            "id": "CS6390"
+        },
+        {
+            "type": "Elective",
+            "level": 6000,
+            "credits": 15
+        },
+        {
+            "type": "Elective",
+            "level": 5000,
+            "credits":3
+        }
+    ]
+}

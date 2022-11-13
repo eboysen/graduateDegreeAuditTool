@@ -1,0 +1,32 @@
+{
+    "TrackName":"Cyber Security",
+    "Requirements":[
+        {
+            "type":"Course",
+            "id": "CS6324"
+        },
+        {
+            "type":"Course",
+            "id": "CS6363"
+        },
+        {
+            "type":"Course",
+            "id": "CS6378"
+        },
+        {
+            "type":"Multiple",
+            "amount": 2,
+            "options":[
+                "CS6332",
+                "CS6348",
+                "CS6349",
+                "CS6377"
+            ]
+        },
+        {
+            "type": "Elective",
+            "level": 6000,
+            "credits": 18
+        }
+    ]
+}

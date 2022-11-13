@@ -1,0 +1,42 @@
+{
+    "TrackName": "Data Science",
+    "Requirements":[
+        {
+            "type":"Course",
+            "id": "CS6313"
+        },
+        {
+            "type":"Course",
+            "id": "CS6350"
+        },
+        {
+            "type":"Course",
+            "id": "CS6363"
+        },
+        {
+            "type":"Course",
+            "id": "CS6375"
+        },
+        {
+            "type":"Multiple",
+            "amount":1,
+            "options":[
+                "CS6301",
+                "CS6320",
+                "CS6327",
+                "CS6347",
+                "CS6360"
+            ]
+        },
+        {
+            "type": "Elective",
+            "level": 6000,
+            "credits": 15
+        },
+        {
+            "type": "Elective",
+            "level": 5000,
+            "credits":3
+        }
+    ]
+}

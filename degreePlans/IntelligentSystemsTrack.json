@@ -1,0 +1,39 @@
+{
+    "TrackName": "Intelligent Systems",
+    "Requirements": [
+        {
+            "type":"Course",
+            "id": "CS6320"
+        },
+        {
+            "type":"Course",
+            "id": "CS6363"
+        },
+        {
+            "type":"Course",
+            "id": "CS6364"
+        },
+        {
+            "type":"Course",
+            "id": "CS6375"
+        },
+        {
+            "type":"Multiple",
+            "amount":1,
+            "options":[
+                "CS6360",
+                "CS6378"
+            ]
+        },
+        {
+            "type": "Elective",
+            "level": 6000,
+            "credits": 15
+        },
+        {
+            "type": "Elective",
+            "level": 5000,
+            "credits":3
+        }
+    ]
+}
