@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class CourseRequirement extends Requirement{
     private String id;
     public boolean isFullfilled(ArrayList<String> option){
@@ -8,5 +10,13 @@ public class CourseRequirement extends Requirement{
             }
         }
         return false;
+    }
+
+    public void scan(){
+
+    }
+    
+    public String toString(){
+        return "\n"+id;
     }
 }
