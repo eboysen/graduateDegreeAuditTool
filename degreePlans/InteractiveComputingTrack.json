@@ -22,12 +22,12 @@
         },
         {
             "type": "Elective",
-            "level": 6000,
+            "level": "6",
             "credits": 15
         },
         {
             "type": "Elective",
-            "level": 5000,
+            "level": "5",
             "credits":3
         }
     ]

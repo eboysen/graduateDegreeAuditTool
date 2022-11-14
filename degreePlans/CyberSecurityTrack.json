@@ -25,7 +25,7 @@
         },
         {
             "type": "Elective",
-            "level": 6000,
+            "level": "6",
             "credits": 18
         }
     ]
