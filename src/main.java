@@ -1,3 +1,4 @@
+
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -24,15 +25,15 @@ public class main {
             System.out.println("Failed to Deserialize Degree");
 
         }
-        finally{
-            try{
+        finally {
+            try {
                 String currentPath = new java.io.File(".").getCanonicalPath();
                 System.out.println("\nCurrent dir:" + currentPath);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("Big Failure");
             }
         }
+        Validator v = new Validator();
 
     }
 }
