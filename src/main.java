@@ -1,6 +1,11 @@
 
+import Parser.course;
+import Parser.semester;
+import Parser.transParser;
+
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 
 public class main {
     public static void main(String[] args){
@@ -19,6 +24,19 @@ public class main {
             System.out.println(NetworksTelecommDegree);
             System.out.println(SystemsDegree);
             System.out.println(TraditionalDegree);
+
+            transParser p = new transParser();
+            p.read("./src/Parser/transcript.txt");
+            System.out.println(p.getDegreeName());
+            HashMap<String, course> h = new HashMap();
+            for (semester s : p.getSems()) {
+                for (course c : s.getCourses()) {
+                    h.put(c.getNumber().replace(" ", ""), c);
+                }
+            }
+
+            DataScienceDegree.validateDegreePlan(h);
+
         }
         catch(Exception e){
             e.printStackTrace();
@@ -33,6 +51,9 @@ public class main {
                 System.out.println("Big Failure");
             }
         }
+
+
+
         Validator v = new Validator();
 
     }

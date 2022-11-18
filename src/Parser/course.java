@@ -41,4 +41,9 @@ public class course {
         earned = e;
         points = p;
     }
+
+    @Override
+    public String toString() {
+        return this.number;
+    }
 }

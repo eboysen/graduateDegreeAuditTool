@@ -2,13 +2,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import Parser.course;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Degree implements Serializable{
     private String TrackName;
+    private Double CoreGPA;
+    private Double CoreRequiredGPA;
+    private Double ElectiveGPA;
+    private Double ElectiveRequiredGPA;
+    private Double OverallGPA;
     private ArrayList<Requirement> Requirements;
 
     public Degree(){
@@ -18,6 +26,87 @@ public class Degree implements Serializable{
     public Degree(String degreeName) throws IOException{
         createDegreeFromJSON(degreeName);
     }
+
+    public void validateDegreePlan(HashMap<String, course> transcript){
+        calculateOverallGPA(transcript);
+
+        HashMap<String,course> transcriptCores = new HashMap<>();
+        HashMap<String, course> transcriptElectives = new HashMap<>();
+        ArrayList<Requirement> choiceRequirements = new ArrayList<>();
+
+        //Separate requirements out into three types
+        for(Requirement requirement: this.Requirements){
+            requirement.setFulfilled(transcript);
+            if(requirement.type.equals("Course")) {
+                transcriptCores.putAll(requirement.fulfillingCourses);
+            }
+            else if(requirement.type.equals("Multiple")) {
+                transcriptCores.putAll(requirement.usedCourses);
+                transcriptElectives.putAll(requirement.fulfillingCourses);
+                choiceRequirements.add(requirement);
+            }
+            else if(requirement.type.equals("Elective")) {
+                transcriptElectives.putAll(requirement.fulfillingCourses);
+            }
+        }
+
+        Double coreAttempted = 0.0;
+        Double corePoints = 0.0;
+        for(course credit : transcriptCores.values()){
+            coreAttempted += Double.parseDouble(credit.getAttempted());
+            corePoints += Double.parseDouble(credit.getPoints());
+        }
+        this.CoreGPA = corePoints/coreAttempted;
+        Double remainingPoints = 48-corePoints;
+        this.CoreRequiredGPA = remainingPoints/(5-transcriptCores.size());
+
+        int numElectives = 6;
+
+        Double electiveAttempted = 0.0;
+        Double electivePoints = 0.0;
+        HashMap<String, course> finalElectives = new HashMap<>();
+        for(Requirement req: this.Requirements){
+            if(req.type.equals("Elective")){
+                ElectiveRequirement electiveReq = (ElectiveRequirement) req;
+                electiveReq.setUsed(transcriptElectives);
+                finalElectives.putAll(electiveReq.usedCourses);
+            }
+
+        }
+        for(course credit: finalElectives.values()){
+            electiveAttempted += Double.parseDouble(credit.getAttempted());
+            electivePoints += Double.parseDouble(credit.getPoints());
+        }
+        this.ElectiveGPA = electivePoints/electiveAttempted;
+        remainingPoints = (numElectives*3)-electivePoints;
+        this.ElectiveRequiredGPA = remainingPoints/(numElectives-transcriptElectives.size());
+
+        System.out.println("Cores");
+        for(course credit : transcriptCores.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println("Electives");
+        for(course credit : finalElectives.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println(this.CoreGPA);
+        System.out.println(this.ElectiveGPA);
+        System.out.println(this.OverallGPA);
+
+    }
+
+    public void calculateOverallGPA(HashMap<String, course> transcript){
+        Double attempted = 0.0;
+        Double points = 0.0;
+        for(course credit : transcript.values()){
+            attempted += Double.parseDouble(credit.getAttempted());
+            points += Double.parseDouble(credit.getPoints());
+        }
+        this.OverallGPA = points/attempted;
+    }
+
 
     public void createDegreeFromJSON(String TrackName){
         try {
