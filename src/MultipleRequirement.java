@@ -56,14 +56,23 @@ public class MultipleRequirement extends Requirement{
             if(highCourse!= null) {
                 this.usedCourses.put(highCourse.getNumber(),highCourse);
                 this.fulfillingCourses.remove(highCourse.getNumber());
+                takenCourses.remove(highCourse.getNumber());
             }
         }
         isFulfilled = amtTaken>=this.amount;
         return amtTaken>=this.amount;
     }
 
-    public void scan(){
-
+    public String getFulfillmentStatus(){
+        if(usedCourses.size()==this.amount){
+            return "\n✓ Fulfilled: \n"+this.toString();
+        }
+        else{
+            return "\n✗ Failed to fulfill (Must complete "+
+                    this.amount+" courses, only completed "+
+                    this.usedCourses.size()+"): \n"+
+                    this.toString();
+        }
     }
 
     public String toString(){

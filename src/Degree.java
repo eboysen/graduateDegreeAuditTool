@@ -15,7 +15,8 @@ public class Degree implements Serializable{
     private Double CoreGPA;
     private Double CoreRequiredGPA;
     private Double ElectiveGPA;
-    private Double ElectiveRequiredGPA;
+    private Double ElectiveRequiredGPA6;
+    private Double ElectiveRequiredGPA7;
     private Double OverallGPA;
     private ArrayList<Requirement> Requirements;
 
@@ -71,15 +72,18 @@ public class Degree implements Serializable{
                 electiveReq.setUsed(transcriptElectives);
                 finalElectives.putAll(electiveReq.usedCourses);
             }
-
         }
+        System.out.println("Final Electives: ");
         for(course credit: finalElectives.values()){
+            System.out.println(credit.getNumber());
             electiveAttempted += Double.parseDouble(credit.getAttempted());
             electivePoints += Double.parseDouble(credit.getPoints());
         }
+        System.out.println(electivePoints);
         this.ElectiveGPA = electivePoints/electiveAttempted;
-        remainingPoints = (numElectives*3)-electivePoints;
-        this.ElectiveRequiredGPA = remainingPoints/(numElectives-transcriptElectives.size());
+        remainingPoints = (18*3)-electivePoints;
+        this.ElectiveRequiredGPA6 = (remainingPoints/(6-finalElectives.size()))/3;
+        this.ElectiveRequiredGPA7 = (remainingPoints/(7-finalElectives.size()))/3;
 
         System.out.println("Cores");
         for(course credit : transcriptCores.values()){
@@ -91,10 +95,16 @@ public class Degree implements Serializable{
             System.out.println(credit.getNumber());
         }
 
-        System.out.println(this.CoreGPA);
-        System.out.println(this.ElectiveGPA);
-        System.out.println(this.OverallGPA);
+        System.out.println("Core GPA:" +this.CoreGPA);
+        System.out.println("Elective GPA:" +this.ElectiveGPA);
+        System.out.println("Overall GPA:" +this.OverallGPA);
+        System.out.println("Required Remaining Core GPA:" +this.CoreRequiredGPA);
+        System.out.println("Required Remaining Elective GPA (6 electives):" +this.ElectiveRequiredGPA6);
+        System.out.println("Required Remaining Elective GPA (7 electives):" +this.ElectiveRequiredGPA7);
+        System.out.println("Remaining Elective Credits: "+remainingPoints);
+        System.out.println("Transcript Electives: "+finalElectives.size());
 
+        System.out.println(this.getFulfillment());
     }
 
     public void calculateOverallGPA(HashMap<String, course> transcript){
@@ -105,6 +115,14 @@ public class Degree implements Serializable{
             points += Double.parseDouble(credit.getPoints());
         }
         this.OverallGPA = points/attempted;
+    }
+
+    public String getFulfillment(){
+        String str="";
+        for(Requirement req: this.Requirements){
+            str+="\n"+req.getFulfillmentStatus();
+        }
+        return str;
     }
 
 
@@ -220,6 +238,12 @@ public class Degree implements Serializable{
 
     public void setRequirements(ArrayList<Requirement> Requirements){
         this.Requirements = Requirements;
+    }
+
+    public void printTranscriptSet(HashMap<String, course>transcript){
+        for(course credit: transcript.values()){
+            System.out.println(credit.getNumber());
+        }
     }
 
     public void setTrackName(String TrackName){

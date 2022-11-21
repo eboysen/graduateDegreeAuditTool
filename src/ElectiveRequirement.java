@@ -74,10 +74,19 @@ public class ElectiveRequirement extends Requirement{
                 takenCourses.remove(highCourse.getNumber());
             }
         }
+        this.remainingCredits -= NumCredits;
     }
 
-    public void scan(){
-
+    public String getFulfillmentStatus(){
+        if(this.remainingCredits<=0){
+            return "\n✓ Fulfilled: \n"+this.toString();
+        }
+        else{
+            return "\n✗ Failed to fulfill (Must complete "+
+                    this.credits+" courses, only completed "+
+                    (this.credits-this.remainingCredits)+"): \n"+
+                    this.toString();
+        }
     }
 
     public String toString(){

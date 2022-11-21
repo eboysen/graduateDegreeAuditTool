@@ -31,7 +31,7 @@ public class main {
             HashMap<String, course> h = new HashMap();
             for (semester s : p.getSems()) {
                 for (course c : s.getCourses()) {
-                    h.put(c.getNumber().replace(" ", ""), c);
+                    h.put(c.getNumber(), c);
                 }
             }
 

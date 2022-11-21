@@ -9,6 +9,6 @@ public abstract class Requirement implements Serializable{
     protected HashMap<String,course> usedCourses;
     protected boolean isFulfilled;
     public abstract boolean setFulfilled(HashMap<String,course> option);
-    public abstract void scan();
+    public abstract String getFulfillmentStatus();
     public abstract String toString();
 }

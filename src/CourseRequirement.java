@@ -35,8 +35,15 @@ public class CourseRequirement extends Requirement{
         return false;
     }
 
-    public void scan(){
-
+    public String getFulfillmentStatus(){
+        if(usedCourses.size()==1){
+            return "\n✓ Fulfilled: \n"+this.toString();
+        }
+        else{
+            return "\n✗ Failed to fulfill (Must complete "+
+                    this.id+"): \n"+
+                    this.toString();
+        }
     }
     
     public String toString(){
