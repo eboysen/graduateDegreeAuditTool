@@ -28,7 +28,7 @@ public class Degree implements Serializable{
         createDegreeFromJSON(degreeName);
     }
 
-    public void validateDegreePlan(HashMap<String, course> transcript){
+    public void validateDegreePlan(HashMap<String, course> transcript, HashMap<String,String> alternatives){
         calculateOverallGPA(transcript);
 
         HashMap<String,course> transcriptCores = new HashMap<>();
@@ -37,6 +37,10 @@ public class Degree implements Serializable{
 
         //Separate requirements out into three types
         for(Requirement requirement: this.Requirements){
+            if(requirement.type.equals("Elective")){
+                ElectiveRequirement el = (ElectiveRequirement) requirement;
+                el.setAlternativeCourses(alternatives);
+            }
             requirement.setFulfilled(transcript);
             if(requirement.type.equals("Course")) {
                 transcriptCores.putAll(requirement.fulfillingCourses);
@@ -78,6 +82,7 @@ public class Degree implements Serializable{
             System.out.println(credit.getNumber());
             electiveAttempted += Double.parseDouble(credit.getAttempted());
             electivePoints += Double.parseDouble(credit.getPoints());
+            transcript.remove(credit.getNumber());
         }
         System.out.println(electivePoints);
         this.ElectiveGPA = electivePoints/electiveAttempted;
@@ -92,6 +97,11 @@ public class Degree implements Serializable{
 
         System.out.println("Electives");
         for(course credit : finalElectives.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println("Unused Courses");
+        for(course credit: transcript.values()){
             System.out.println(credit.getNumber());
         }
 
@@ -111,8 +121,10 @@ public class Degree implements Serializable{
         Double attempted = 0.0;
         Double points = 0.0;
         for(course credit : transcript.values()){
-            attempted += Double.parseDouble(credit.getAttempted());
-            points += Double.parseDouble(credit.getPoints());
+            if(Double.parseDouble(credit.getPoints())!=-1.0) {
+                attempted += Double.parseDouble(credit.getAttempted());
+                points += Double.parseDouble(credit.getPoints());
+            }
         }
         this.OverallGPA = points/attempted;
     }

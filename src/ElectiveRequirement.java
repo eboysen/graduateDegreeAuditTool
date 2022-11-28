@@ -12,6 +12,8 @@ public class ElectiveRequirement extends Requirement{
 
     private int remainingCredits;
 
+    private HashMap<String,String> alternativeCourses;
+
     public ElectiveRequirement(JsonParser jsonParser) throws IOException {
         this.type = "Elective";
         this.fulfillingCourses = new HashMap<>();
@@ -34,7 +36,8 @@ public class ElectiveRequirement extends Requirement{
             int currentLevel = Integer.parseInt(takenCourse.getNumber().split(" ")[1].substring(0,1));
             if(currentLevel>=Integer.parseInt(this.level) &&
                     takenCourse.getAttempted().equals(takenCourse.getEarned())&&
-                    takenCourse.getNumber().split(" ")[0].equals("CS")){
+                    (takenCourse.getNumber().split(" ")[0].equals("CS")||
+                    alternativeCourses.get(takenCourse.getNumber())!=null)){
                 this.fulfillingCourses.put(takenCourse.getNumber(), takenCourse);
                 if(remainingCredits<=0) {
                     this.remainingCredits -= Double.parseDouble(takenCourse.getEarned());
@@ -87,6 +90,10 @@ public class ElectiveRequirement extends Requirement{
                     (this.credits-this.remainingCredits)+"): \n"+
                     this.toString();
         }
+    }
+
+    public void setAlternativeCourses(HashMap<String,String> alt){
+        this.alternativeCourses=alt;
     }
 
     public String toString(){
