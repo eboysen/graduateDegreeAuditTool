@@ -96,15 +96,23 @@ public class PdfGenerator {
         doc.close();
         System.out.println("Table created successfully..");
     }
-    public static void generateAuditReportPdf(String text)
+    public static void generateAuditReportPdf(String info, String name, String Track, String Sem)
             throws FileNotFoundException{
         //Document Setup
-        PdfWriter writer = new PdfWriter("Audit Report.pdf");
+        PdfWriter writer = new PdfWriter(name + " Audit Report.pdf");
         PdfDocument pdf = new PdfDocument(writer);
         Document doc = new Document(pdf);
 
         //Creating the title
-        Paragraph p = new Paragraph(text);
+        Paragraph p = new Paragraph("University of Texas at Dallas\n").setBold().setTextAlignment(TextAlignment.CENTER);
+        p.add("Master of Computer Science\n\n");
+        p.add(Track); //Insert Track Name Here
+        //Creating name form
+        Paragraph n = new Paragraph("Name: \n");
+        n.add("Semester Admitted to Program: " + Sem);
+
+        //Adding the info dump text
+        Paragraph i = new Paragraph(info);
         doc.add(p);
 
         // Closing the document
