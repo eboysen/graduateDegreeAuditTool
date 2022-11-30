@@ -96,4 +96,19 @@ public class PdfGenerator {
         doc.close();
         System.out.println("Table created successfully..");
     }
+    public static void generateAuditReportPdf(String text)
+            throws FileNotFoundException{
+        //Document Setup
+        PdfWriter writer = new PdfWriter("Audit Report.pdf");
+        PdfDocument pdf = new PdfDocument(writer);
+        Document doc = new Document(pdf);
+
+        //Creating the title
+        Paragraph p = new Paragraph(text);
+        doc.add(p);
+
+        // Closing the document
+        doc.close();
+        System.out.println("Report created successfully..");
+    }
 }
