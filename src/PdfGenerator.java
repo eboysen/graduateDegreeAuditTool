@@ -18,7 +18,7 @@ import java.util.*;
 public class PdfGenerator {
 
 
-    public static void generatePdf(String Sem, String Track, ArrayList<course> cores, ArrayList<course> electives) throws FileNotFoundException {
+    public static void generateDegreePlanPdf(String Sem, String Track, ArrayList<course> cores, ArrayList<course> electives) throws FileNotFoundException {
         //Document Setup
         PdfWriter writer = new PdfWriter(Track + " Degree Plan.pdf");
         PdfDocument pdf = new PdfDocument(writer);
