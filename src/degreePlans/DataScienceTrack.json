@@ -3,29 +3,29 @@
     "Requirements":[
         {
             "type":"Course",
-            "id": "CS6313"
+            "id": "CS 6313"
         },
         {
             "type":"Course",
-            "id": "CS6350"
+            "id": "CS 6350"
         },
         {
             "type":"Course",
-            "id": "CS6363"
+            "id": "CS 6363"
         },
         {
             "type":"Course",
-            "id": "CS6375"
+            "id": "CS 6375"
         },
         {
             "type":"Multiple",
             "amount":1,
             "options":[
-                "CS6301",
-                "CS6320",
-                "CS6327",
-                "CS6347",
-                "CS6360"
+                "CS 6301",
+                "CS 6320",
+                "CS 6327",
+                "CS 6347",
+                "CS 6360"
             ]
         },
         {

@@ -2,6 +2,8 @@ import javax.swing.JFileChooser;
 import Parser.transParser;
 import Parser.semester;
 import Parser.course;
+
+import java.io.IOException;
 import java.util.HashMap;
 public class Validator extends javax.swing.JFrame {
 
@@ -45,7 +47,7 @@ public class Validator extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cyber Security", "Data Science", "Intelligent Systems", "Interactive Computing", "Networks and Telecommunications","Systems","Traditional" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -110,16 +112,24 @@ public class Validator extends javax.swing.JFrame {
         h = new HashMap();
         for (semester s : p.getSems()) {
             for (course c : s.getCourses()) {
-                h.put(c.getNumber().replace(" ", ""), c);
+                h.put(c.getNumber(), c);
             }
         }
         for (String k : h.keySet()) {
             System.out.println(k + " " + h.get(k).getName());
         }
+        HashMap<String,String> alts = new HashMap<>();
+        alts.put("CS 5177","CS 5177");
+        this.degree.validateDegreePlan(h,alts);
     }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        try {
+            this.degree = new Degree(jComboBox1.getSelectedItem().toString());
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -164,6 +174,8 @@ public class Validator extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+
+    private Degree degree;
     // End of variables declaration
 }
 

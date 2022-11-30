@@ -2,13 +2,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import Parser.course;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Degree implements Serializable{
     private String TrackName;
+    private Double CoreGPA;
+    private Double CoreRequiredGPA;
+    private Double ElectiveGPA;
+    private Double ElectiveRequiredGPA6;
+    private Double ElectiveRequiredGPA7;
+    private Double OverallGPA;
     private ArrayList<Requirement> Requirements;
 
     public Degree(){
@@ -18,6 +27,116 @@ public class Degree implements Serializable{
     public Degree(String degreeName) throws IOException{
         createDegreeFromJSON(degreeName);
     }
+
+    public void validateDegreePlan(HashMap<String, course> transcript, HashMap<String,String> alternatives){
+        calculateOverallGPA(transcript);
+
+        HashMap<String,course> transcriptCores = new HashMap<>();
+        HashMap<String, course> transcriptElectives = new HashMap<>();
+        ArrayList<Requirement> choiceRequirements = new ArrayList<>();
+
+        //Separate requirements out into three types
+        for(Requirement requirement: this.Requirements){
+            if(requirement.type.equals("Elective")){
+                ElectiveRequirement el = (ElectiveRequirement) requirement;
+                el.setAlternativeCourses(alternatives);
+            }
+            requirement.setFulfilled(transcript);
+            if(requirement.type.equals("Course")) {
+                transcriptCores.putAll(requirement.fulfillingCourses);
+            }
+            else if(requirement.type.equals("Multiple")) {
+                transcriptCores.putAll(requirement.usedCourses);
+                transcriptElectives.putAll(requirement.fulfillingCourses);
+                choiceRequirements.add(requirement);
+            }
+            else if(requirement.type.equals("Elective")) {
+                transcriptElectives.putAll(requirement.fulfillingCourses);
+            }
+        }
+
+        Double coreAttempted = 0.0;
+        Double corePoints = 0.0;
+        for(course credit : transcriptCores.values()){
+            coreAttempted += Double.parseDouble(credit.getAttempted());
+            corePoints += Double.parseDouble(credit.getPoints());
+        }
+        this.CoreGPA = corePoints/coreAttempted;
+        Double remainingPoints = 48-corePoints;
+        this.CoreRequiredGPA = remainingPoints/(5-transcriptCores.size());
+
+        int numElectives = 6;
+
+        Double electiveAttempted = 0.0;
+        Double electivePoints = 0.0;
+        HashMap<String, course> finalElectives = new HashMap<>();
+        for(Requirement req: this.Requirements){
+            if(req.type.equals("Elective")){
+                ElectiveRequirement electiveReq = (ElectiveRequirement) req;
+                electiveReq.setUsed(transcriptElectives);
+                finalElectives.putAll(electiveReq.usedCourses);
+            }
+        }
+        System.out.println("Final Electives: ");
+        for(course credit: finalElectives.values()){
+            System.out.println(credit.getNumber());
+            electiveAttempted += Double.parseDouble(credit.getAttempted());
+            electivePoints += Double.parseDouble(credit.getPoints());
+            transcript.remove(credit.getNumber());
+        }
+        System.out.println(electivePoints);
+        this.ElectiveGPA = electivePoints/electiveAttempted;
+        remainingPoints = (18*3)-electivePoints;
+        this.ElectiveRequiredGPA6 = (remainingPoints/(6-finalElectives.size()))/3;
+        this.ElectiveRequiredGPA7 = (remainingPoints/(7-finalElectives.size()))/3;
+
+        System.out.println("Cores");
+        for(course credit : transcriptCores.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println("Electives");
+        for(course credit : finalElectives.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println("Unused Courses");
+        for(course credit: transcript.values()){
+            System.out.println(credit.getNumber());
+        }
+
+        System.out.println("Core GPA:" +this.CoreGPA);
+        System.out.println("Elective GPA:" +this.ElectiveGPA);
+        System.out.println("Overall GPA:" +this.OverallGPA);
+        System.out.println("Required Remaining Core GPA:" +this.CoreRequiredGPA);
+        System.out.println("Required Remaining Elective GPA (6 electives):" +this.ElectiveRequiredGPA6);
+        System.out.println("Required Remaining Elective GPA (7 electives):" +this.ElectiveRequiredGPA7);
+        System.out.println("Remaining Elective Credits: "+remainingPoints);
+        System.out.println("Transcript Electives: "+finalElectives.size());
+
+        System.out.println(this.getFulfillment());
+    }
+
+    public void calculateOverallGPA(HashMap<String, course> transcript){
+        Double attempted = 0.0;
+        Double points = 0.0;
+        for(course credit : transcript.values()){
+            if(Double.parseDouble(credit.getPoints())!=-1.0) {
+                attempted += Double.parseDouble(credit.getAttempted());
+                points += Double.parseDouble(credit.getPoints());
+            }
+        }
+        this.OverallGPA = points/attempted;
+    }
+
+    public String getFulfillment(){
+        String str="";
+        for(Requirement req: this.Requirements){
+            str+="\n"+req.getFulfillmentStatus();
+        }
+        return str;
+    }
+
 
     public void createDegreeFromJSON(String TrackName){
         try {
@@ -131,6 +250,12 @@ public class Degree implements Serializable{
 
     public void setRequirements(ArrayList<Requirement> Requirements){
         this.Requirements = Requirements;
+    }
+
+    public void printTranscriptSet(HashMap<String, course>transcript){
+        for(course credit: transcript.values()){
+            System.out.println(credit.getNumber());
+        }
     }
 
     public void setTrackName(String TrackName){

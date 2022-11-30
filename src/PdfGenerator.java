@@ -1,4 +1,5 @@
 
+import Parser.course;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -10,10 +11,11 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
-import java.awt.*;
+
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.*;
+
 
 public class PdfGenerator {
 
