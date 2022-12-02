@@ -47,6 +47,6 @@ public class CourseRequirement extends Requirement{
     }
     
     public String toString(){
-        return "\nID: "+id;
+        return id;
     }
 }

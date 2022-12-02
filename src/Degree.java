@@ -20,6 +20,10 @@ public class Degree implements Serializable{
     private Double OverallGPA;
     private ArrayList<Requirement> Requirements;
 
+    public HashMap<String,course> transcriptCores;
+
+    public HashMap<String, course> finalElectives;
+
     public Degree(){
         this.TrackName = "Default";
     }
@@ -28,10 +32,10 @@ public class Degree implements Serializable{
         createDegreeFromJSON(degreeName);
     }
 
-    public void validateDegreePlan(HashMap<String, course> transcript, HashMap<String,String> alternatives){
+    public String validateDegreePlan(HashMap<String, course> transcript, HashMap<String,String> alternatives){
         calculateOverallGPA(transcript);
 
-        HashMap<String,course> transcriptCores = new HashMap<>();
+        transcriptCores = new HashMap<>();
         HashMap<String, course> transcriptElectives = new HashMap<>();
         ArrayList<Requirement> choiceRequirements = new ArrayList<>();
 
@@ -69,7 +73,7 @@ public class Degree implements Serializable{
 
         Double electiveAttempted = 0.0;
         Double electivePoints = 0.0;
-        HashMap<String, course> finalElectives = new HashMap<>();
+        finalElectives = new HashMap<>();
         for(Requirement req: this.Requirements){
             if(req.type.equals("Elective")){
                 ElectiveRequirement electiveReq = (ElectiveRequirement) req;
@@ -105,16 +109,16 @@ public class Degree implements Serializable{
             System.out.println(credit.getNumber());
         }
 
-        System.out.println("Core GPA:" +this.CoreGPA);
-        System.out.println("Elective GPA:" +this.ElectiveGPA);
-        System.out.println("Overall GPA:" +this.OverallGPA);
-        System.out.println("Required Remaining Core GPA:" +this.CoreRequiredGPA);
-        System.out.println("Required Remaining Elective GPA (6 electives):" +this.ElectiveRequiredGPA6);
-        System.out.println("Required Remaining Elective GPA (7 electives):" +this.ElectiveRequiredGPA7);
-        System.out.println("Remaining Elective Credits: "+remainingPoints);
-        System.out.println("Transcript Electives: "+finalElectives.size());
-
-        System.out.println(this.getFulfillment());
+        return ("Core GPA:" +this.CoreGPA + "\n" +
+        "Elective GPA:" +this.ElectiveGPA + "\n" +
+        "Overall GPA:" +this.OverallGPA + "\n" +
+        "Required Remaining Core GPA:" +this.CoreRequiredGPA + "\n" +
+        "Required Remaining Elective GPA (6 electives):" +this.ElectiveRequiredGPA6 + "\n" +
+        "Required Remaining Elective GPA (7 electives):" +this.ElectiveRequiredGPA7 + "\n" +
+        "Remaining Elective Credits: "+remainingPoints + "\n" +
+    "Transcript Electives: "+finalElectives.size() + "\n" +
+        this.getFulfillment()
+                );
     }
 
     public void calculateOverallGPA(HashMap<String, course> transcript){

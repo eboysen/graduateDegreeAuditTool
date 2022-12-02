@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public abstract class Requirement implements Serializable{
     protected String type;
-    protected HashMap<String,course> fulfillingCourses;
+    public HashMap<String,course> fulfillingCourses;
     protected HashMap<String,course> usedCourses;
     protected boolean isFulfilled;
     public abstract boolean setFulfilled(HashMap<String,course> option);

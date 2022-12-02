@@ -9,6 +9,15 @@ public class course {
     String earned;
     String points;
 
+    public course(String nam, String num, ArrayList<String> ins, String a, String e, String p){
+        name = nam;
+        number = num;
+        instructors = ins;
+        attempted = a;
+        earned = e;
+        points = p;
+    }
+
     public String getName() {
         return name;
     }
@@ -33,17 +42,16 @@ public class course {
         return points;
     }
 
-    public course(String nam, String num, ArrayList<String> ins, String a, String e, String p){
-        name = nam;
-        number = num;
-        instructors = ins;
-        attempted = a;
-        earned = e;
-        points = p;
-    }
-
-    @Override
-    public String toString() {
-        return this.number;
+    public void printAll(){
+        System.out.println(name);
+        System.out.println(number);
+        System.out.println("INSTRUCTORS: [");
+        for(int i = 0; i < instructors.size(); i++){
+            System.out.println(instructors.get(i));
+        }
+        System.out.println("]");
+        System.out.println(attempted);
+        System.out.println(earned);
+        System.out.println(points);
     }
 }

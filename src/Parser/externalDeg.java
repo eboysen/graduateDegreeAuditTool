@@ -11,4 +11,11 @@ public class externalDeg {
         dateFinished = dF;
     }
     
+    public void printAll(){
+        System.out.println("EX DEGS: {");
+        System.out.println(school);
+        System.out.println(degreeName);
+        System.out.println(dateFinished);
+        System.out.println("}");
+    }
 }

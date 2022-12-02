@@ -60,4 +60,18 @@ public class semester {
         transCum = tc;
         combinedCum = cc;
     }
+
+    public void printAll(){
+        System.out.println("SEMESTER: " + year + " " + season + "{");
+        for(int i = 0; i < courses.size(); i++){
+            courses.get(i).printAll();
+        }
+        term.printAll();
+        transfer.printAll();
+        combined.printAll();
+        cum.printAll();
+        transCum.printAll();
+        combinedCum.printAll();
+        System.out.println("}");
+    }
 }

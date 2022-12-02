@@ -20,9 +20,9 @@ import java.util.*;
 public class PdfGenerator {
 
 
-    public static void generateDegreePlanPdf(String Sem, String Track, ArrayList<course> cores, ArrayList<course> electives) throws FileNotFoundException {
+    public static void generateDegreePlanPdf(String name, String id, String Sem, String Track, ArrayList<course> cores, ArrayList<course> electives) throws FileNotFoundException {
         //Document Setup
-        PdfWriter writer = new PdfWriter(Track + " Degree Plan.pdf");
+        PdfWriter writer = new PdfWriter((name + Track + " Degree Plan.pdf").replaceAll(" ", ""));
         PdfDocument pdf = new PdfDocument(writer);
         Document doc = new Document(pdf);
 
@@ -33,18 +33,18 @@ public class PdfGenerator {
         p.add("Master of Computer Science\n\n");
         p.add(Track); //Insert Track Name Here
         //Creating name form
-        Paragraph n = new Paragraph("Name: \n");
-        n.add("Student I.D. Number: \n");
+        Paragraph n = new Paragraph("Name: " + name + "\n");
+        n.add("Student I.D. Number: " + id + "\n");
         n.add("Semester Admitted to Program: " + Sem);
-        n.add("                     Anticipated Graduation: ");
+        n.add("\t\tAnticipated Graduation: ");
 
         // Creating a table
-        Table table = new Table(UnitValue.createPercentArray(new float[]{10, 5, 5, 5, 5}));
+        Table table = new Table(UnitValue.createPercentArray(new float[]{5, 5, 5, 5}));
         table.setWidth(UnitValue.createPercentValue(100));
 
         // Creating Header
 
-        table.addCell("Name").setBold();
+        //table.addCell("Name").setBold();
         table.addCell("Number").setBold();
         table.addCell("Semester").setBold();
         table.addCell("Transfer").setBold();
@@ -58,13 +58,13 @@ public class PdfGenerator {
         table2.setWidth(UnitValue.createPercentValue(100));
 
         // Adding Actual courses
-        Table core_table = new Table(UnitValue.createPercentArray(new float[]{10, 5, 5, 5, 5}));
+        Table core_table = new Table(UnitValue.createPercentArray(new float[]{5, 5, 5, 5}));
         core_table.setWidth(UnitValue.createPercentValue(100));
         for (course c : cores){
-            core_table.addCell(c.getName());
-            core_table.addCell("");
-            core_table.addCell("");
-            core_table.addCell("");
+            core_table.addCell(c.getNumber());
+            //core_table.addCell("");
+            core_table.addCell(c.getAttempted());
+            core_table.addCell(c.getEarned());
             core_table.addCell(c.getPoints());
         }
         // Adding Elective Courses Label
@@ -73,15 +73,17 @@ public class PdfGenerator {
         electivelabel.setWidth(UnitValue.createPercentValue(100));
 
         //Adding Elective Courses
-        Table electives_table = new Table(UnitValue.createPercentArray(new float[]{10, 5, 5, 5, 5}));
+        Table electives_table = new Table(UnitValue.createPercentArray(new float[]{5, 5, 5, 5}));
         electives_table.setWidth(UnitValue.createPercentValue(100));
         for (course c : electives){
-            electives_table.addCell(c.getName());
-            electives_table.addCell("");
-            electives_table.addCell("");
-            electives_table.addCell("");
+            electives_table.addCell(c.getNumber());
+            //electives_table.addCell("");
+            electives_table.addCell(c.getAttempted());
+            electives_table.addCell(c.getEarned());
             electives_table.addCell(c.getPoints());
         }
+
+
 
         // Adding Document Elements
         doc.add(p);
@@ -108,12 +110,14 @@ public class PdfGenerator {
         p.add("Master of Computer Science\n\n");
         p.add(Track); //Insert Track Name Here
         //Creating name form
-        Paragraph n = new Paragraph("Name: \n");
+        Paragraph n = new Paragraph("Name: " + name + "\n");
         n.add("Semester Admitted to Program: " + Sem);
 
         //Adding the info dump text
         Paragraph i = new Paragraph(info);
         doc.add(p);
+        doc.add(n);
+        doc.add(i);
 
         // Closing the document
         doc.close();
