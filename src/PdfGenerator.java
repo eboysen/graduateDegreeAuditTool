@@ -114,7 +114,7 @@ public class PdfGenerator {
         n.add("Semester Admitted to Program: " + Sem);
 
         //Adding the info dump text
-        Paragraph i = new Paragraph(info);
+        Paragraph i = new Paragraph(info).setFontSize(10);
         doc.add(p);
         doc.add(n);
         doc.add(i);

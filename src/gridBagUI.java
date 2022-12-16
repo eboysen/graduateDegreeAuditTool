@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class gridBagUI {
     static JFrame f;
-    private static void addComponentsToPane(Container pane, JFrame fra) {
+    private static void addComponentsToPane(    Container pane, JFrame fra) {
         f = fra;
         coursePanel p;
         ArrayList<coursePanel> cores = new ArrayList<>();
